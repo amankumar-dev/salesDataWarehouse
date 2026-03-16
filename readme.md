@@ -128,10 +128,9 @@ Main Menu:
 
 ## 👨‍💻 Author
 
-Aman Kumar
-Aspiring Data Engineer
+Aman Kumar | Aspiring Data Engineer
 
 ---
 
 🔗 GitHub Repository:
-(Add your repository link here after pushing)
+https://github.com/amankumar-dev/salesDataWarehouse
