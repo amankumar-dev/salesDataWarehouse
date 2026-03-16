@@ -39,7 +39,7 @@ CLI Reporting
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/your-username/sales_data_warehouse.git
+git clone https://github.com/amankumar-dev/salesDataWarehouse.git
 cd sales_data_warehouse
 ```
 
