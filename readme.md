@@ -79,7 +79,7 @@ CREATE DATABASE sales_dw;
 Update your `.env` file:
 
 ```env
-DB_NAME=sales_dw
+DB_NAME=salesData
 DB_USER=your_username
 DB_PASSWORD=your_password
 DB_HOST=localhost
