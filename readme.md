@@ -2,28 +2,19 @@
 
 ## 📌 Overview
 
-This project is a **Star Schema-based Sales Data Warehouse** built using:
+A Star Schema-based Sales Data Warehouse built using **Python, Pandas, NumPy, and PostgreSQL**.
 
-* Python
-* Pandas
-* NumPy
-* PostgreSQL
-
-It simulates a real-world Data Engineering workflow where raw sales data is extracted from CSV files, transformed using Pandas, loaded into PostgreSQL, and analyzed using advanced SQL queries.
+This project implements a complete ETL pipeline that extracts raw CSV sales data, transforms it using Pandas, loads it into PostgreSQL, and generates business KPIs using advanced SQL analytics.
 
 ---
 
-## 🎯 Objective
+## 🚀 Tech Stack
 
-To design and implement a complete ETL pipeline and analytics system capable of answering business questions such as:
-
-* Total revenue
-* Top-selling products
-* Best customers
-* Sales by region
-* Monthly growth trends
-* Profit margins
-* Customer retention insights
+* Python 3.x
+* Pandas
+* NumPy
+* PostgreSQL
+* psycopg2
 
 ---
 
@@ -32,48 +23,80 @@ To design and implement a complete ETL pipeline and analytics system capable of 
 ```text
 Raw CSV Files
       ↓
-Python ETL (Pandas + NumPy)
+Python ETL (Pandas)
       ↓
 PostgreSQL Data Warehouse
       ↓
-SQL Analytics Queries
+SQL Analytics (KPIs)
       ↓
-Business Insights (CLI Reporting)
+CLI Reporting
 ```
 
 ---
 
-## 🔄 ETL Process
+## ⚙️ Setup Instructions
 
-**Extract**
+### 1️⃣ Clone Repository
 
-* Read CSV files using Pandas
-
-**Transform**
-
-* Remove nulls and duplicates
-* Standardize date formats
-* Calculate revenue and profit
-
-**Load**
-
-* Insert cleaned data into PostgreSQL
-* Map foreign keys
-* Populate fact table
+```bash
+git clone https://github.com/your-username/sales_data_warehouse.git
+cd sales_data_warehouse
+```
 
 ---
 
-## 📊 Analytics Implemented
+### 2️⃣ Create Virtual Environment
 
-* Revenue Analytics (Total, Monthly, Regional, Category-wise)
-* Product Analytics (Top Products, Profit Margin, Category Performance)
-* Customer Analytics (Top Customers, Repeat Customers, Revenue per Customer)
-* Time-Based Analytics (Monthly Growth %, Running Total, Moving Average)
-* Advanced SQL with Window Functions (`LAG()`, `SUM() OVER()`)
+```bash
+python -m venv venv
+venv\Scripts\activate   # Windows
+```
 
 ---
 
-## 🖥 CLI Features
+### 3️⃣ Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+If `requirements.txt` is not available:
+
+```bash
+pip install pandas numpy psycopg2 python-dotenv
+```
+
+---
+
+### 4️⃣ Database Setup (PostgreSQL)
+
+Create database:
+
+```sql
+CREATE DATABASE sales_dw;
+```
+
+Update your `.env` file:
+
+```env
+DB_NAME=sales_dw
+DB_USER=your_username
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_PORT=5432
+```
+
+---
+
+## ▶️ Running the Project
+
+Run the CLI application:
+
+```bash
+python app.py
+```
+
+Main Menu:
 
 ```text
 1. Run ETL Process
@@ -86,13 +109,14 @@ Business Insights (CLI Reporting)
 
 ---
 
-## 🚀 Key Skills Demonstrated
+## 📊 Features
 
+* Complete ETL Pipeline
 * Star Schema Data Modeling
-* ETL Pipeline Development
-* SQL Aggregations & Window Functions
-* Foreign Keys & Indexing
-* Modular Python Project Structure
+* Revenue, Product, Customer & Time Analytics
+* Advanced SQL (Window Functions, Growth %, Running Totals)
+* Indexed fact table for performance optimization
+* Modular CLI-based system
 
 ---
 
@@ -106,3 +130,8 @@ Business Insights (CLI Reporting)
 
 Aman Kumar
 Aspiring Data Engineer
+
+---
+
+🔗 GitHub Repository:
+(Add your repository link here after pushing)
