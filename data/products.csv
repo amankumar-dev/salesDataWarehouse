@@ -1,11 +1,31 @@
-product_name,category,price,cost
-Laptop,Electronics,65000,48000
-Smartphone,Electronics,30000,21000
-Headphones,Electronics,4000,2500
-Shoes,Fashion,5000,3200
-Watch,Fashion,8000,5000
-Backpack,Fashion,2500,1500
-Refrigerator,Appliances,45000,35000
-Microwave,Appliances,12000,8500
-Desk Chair,Furniture,7000,4500
-Study Table,Furniture,15000,10000
+product_id,product_name,category,cost_price,unit_price
+1,Samsung Galaxy S23,Electronics,45000,52000
+2,Apple iPhone 14,Electronics,60000,72000
+3,HP Pavilion Laptop,Electronics,42000,50000
+4,Dell Inspiron Laptop,Electronics,39000,47000
+5,Sony Headphones,Electronics,3500,4999
+6,Nike Running Shoes,Fashion,2500,3999
+7,Adidas Sneakers,Fashion,2200,3599
+8,Levi's Jeans,Fashion,1200,2499
+9,Zara Jacket,Fashion,1800,3499
+10,Puma T-Shirt,Fashion,500,1199
+11,LG Refrigerator,Appliances,25000,32000
+12,Samsung Washing Machine,Appliances,18000,24000
+13,Philips Air Fryer,Appliances,5000,7999
+14,Prestige Cooker,Appliances,1200,1999
+15,Wooden Dining Table,Home,15000,22000
+16,Office Chair,Home,3000,5499
+17,LED TV 43 inch,Electronics,22000,29999
+18,Mi Smart Watch,Electronics,3000,4999
+19,Boat Bluetooth Speaker,Electronics,1200,2499
+20,Raymond Suit,Fashion,3500,6999
+21,Titan Watch,Fashion,4000,7999
+22,Gas Stove 3 Burner,Home,2500,3999
+23,Bed Mattress,Home,6000,9999
+24,Kitchen Mixer Grinder,Appliances,2500,4499
+25,Study Table,Home,4000,7499
+26,Air Conditioner 1.5T,Appliances,28000,36000
+27,Casual Shirt,Fashion,700,1499
+28,Formal Shoes,Fashion,1800,2999
+29,Gaming Mouse,Electronics,800,1499
+30,Backpack,Fashion,600,1299

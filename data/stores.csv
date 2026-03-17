@@ -1,6 +1,9 @@
-store_name,region
-North Hub,North
-West Hub,West
-South Hub,South
-East Hub,East
-Central Hub,Central
+store_id,store_name,region
+1,Reliance Digital - Delhi,North
+2,Croma - Mumbai,West
+3,Vijay Sales - Bangalore,South
+4,Tata Croma - Hyderabad,South
+5,Lifestyle Store - Chennai,South
+6,Shoppers Stop - Pune,West
+7,Big Bazaar - Kolkata,East
+8,DMart - Ahmedabad,West
