@@ -1,6 +1,7 @@
 # A mini data warehouse system that takes raw sales data -> cleans it -> load -> star schema -> KPIs -> Generate business insights
-from query import load_cust,load_order,load_prod,load_store,total_revenue
+from query import load_cust,load_order,load_prod,load_store,total_revenue,month_revenue,region_revenue
 from etl import custDf,factDf,prodDf,storeDf
+import calendar
 
 main_menu=f'''
 {'='*7} Main Menu {'='*7}
@@ -108,15 +109,39 @@ def total_rev_cal():
     else:
         print('Something went wrong')
 
-# For Revenue analytics
+# For month revenue
+def month_rev_cal():
+    result=month_revenue()
+    if result:
+        print(f"{'='*5} Monthly Revenue {'='*5}")
+        for data in result:
+            year=data[0]
+            month=data[1]
+            revenue=data[2]
+            print(f'{calendar.month_abbr[month]} {year} = {revenue}')
+    else:
+        print('Something went wrong')
+
+# For region revenue
+def region_rev_cal():
+    data=region_revenue()
+    if data:
+        print(f"{'='*5} Region Revenue {'='*5}")
+        for i in data:
+            region=i[0]
+            revenue=i[1]
+            print(f"{region} = {revenue}")
+    else:
+        print("Data can't be calculated !!")
+
 def revenue_analytics_option():
     while((user_input:=input(revenu_menu))!='5'):
         if user_input=='1':
             total_rev_cal()
         elif user_input=='2':
-            pass
+            month_rev_cal()
         elif user_input=='3':
-            pass
+            region_rev_cal()
         elif user_input=='4':
             pass
         elif user_input=='5':

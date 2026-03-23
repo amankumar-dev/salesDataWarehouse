@@ -59,3 +59,37 @@ def total_revenue():
         except Exception as e:
             print('Something went wrong ',e)
 
+# Loading revenue by month
+def month_revenue():
+    with conn:
+        try:
+            cursor.execute('''SELECT 
+                                EXTRACT(YEAR FROM order_date)::INT AS year,
+                                EXTRACT(MONTH FROM order_date)::INT AS month,
+                                SUM(revenue) AS total_revenue
+                                FROM order_table
+                            GROUP BY year,month
+                            ORDER BY year,month;
+                           ''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print('Something went wrong: ',e)
+
+# Loading revenue by region
+def region_revenue():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                s.region,SUM(o.revenue)
+                                AS total_revenue
+                                FROM order_table o
+                                JOIN store_table s
+                                ON s.storeid=o.storeid
+                                GROUP BY s.region
+                                ORDER BY total_revenue DESC;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print("Can't fetch data")
+
