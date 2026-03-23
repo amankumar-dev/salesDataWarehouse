@@ -1,3 +1,5 @@
+from db import conn,cursor
+
 # Loading dim tables
 def load_cust(custDf):    
     # Calculating conditions
@@ -46,3 +48,14 @@ def load_order(salesDf):
     print('Total rows: ',total_row)
     print('Duplicated rows: ',dup_row)
     print('Null values: ',null_val)
+    
+# Loading total revenue
+def total_revenue():
+    with conn:
+        try:
+            cursor.execute('''SELECT SUM(revenue) FROM order_table;''')
+            result=cursor.fetchone()[0]
+            return result
+        except Exception as e:
+            print('Something went wrong ',e)
+

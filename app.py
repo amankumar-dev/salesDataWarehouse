@@ -1,5 +1,5 @@
 # A mini data warehouse system that takes raw sales data -> cleans it -> load -> star schema -> KPIs -> Generate business insights
-from query import load_cust,load_order,load_prod,load_store
+from query import load_cust,load_order,load_prod,load_store,total_revenue
 from etl import custDf,factDf,prodDf,storeDf
 
 main_menu=f'''
@@ -99,11 +99,20 @@ def etl_process_option():
         else:
             print('Please choose from the selection !!')
 
+# For total revenue
+def total_rev_cal():
+    result=total_revenue()
+    if(result):
+        print(f'{'='*5} Total Revenue {'='*5}')
+        print(f'Total Revenue: ₹ {result/10000000:.2f} Cr')
+    else:
+        print('Something went wrong')
+
 # For Revenue analytics
 def revenue_analytics_option():
     while((user_input:=input(revenu_menu))!='5'):
         if user_input=='1':
-            pass
+            total_rev_cal()
         elif user_input=='2':
             pass
         elif user_input=='3':
