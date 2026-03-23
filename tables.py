@@ -15,7 +15,7 @@ def cust_table():
             print('table created')
         except Exception as e:
             print("Table can't created ",e)
-cust_table()
+
 # inserting value in customer table
 def insert_cust():
     query='''INSERT INTO cust_table(custname,email,city,source_custId) VALUES %s'''
@@ -26,7 +26,7 @@ def insert_cust():
             print('value inserted')
         except Exception as e:
             print("Value can't inserted",e)
-insert_cust()
+
 # Creating prod table
 def prod_table():
     with conn:
@@ -40,7 +40,7 @@ def prod_table():
             print('Product table created')
         except Exception as e:
             print("Table can't be created because ",e)
-            
+
 # Inserting value into prod table
 def insert_prod():
     query='''INSERT INTO prod_table(prodName,category,costprice,unitprice) VALUES %s'''
@@ -63,7 +63,7 @@ def store_table():
             print('Store table created')
         except Exception as e:
             print('Store table cannot be created')
-            
+
 # Inserting store value
 def insert_store():
     query='''INSERT INTO store_table(storeName,region) VALUES %s'''
@@ -107,4 +107,4 @@ def insert_order():
             print('Value inserted into order table')
         except Exception as e:
             print('Value cannot be inserted ',e)
-insert_order()
+
