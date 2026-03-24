@@ -93,3 +93,55 @@ def region_revenue():
         except Exception as e:
             print("Can't fetch data")
 
+# Loading revenue by category
+def category_revenue():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                p.category,SUM(revenue)
+                                AS total_revenue
+                                FROM order_table o
+                                JOIN prod_table p
+                                ON p.prodid=o.prodid
+                                GROUP BY p.category
+                                ORDER BY total_revenue DESC;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print("Can't collect data ",e)
+            
+# Loading Top 10 prod by revenue
+def top_prod():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                p.prodname,SUM(revenue)
+                                AS total_revenue
+                                FROM order_table o
+                                JOIN prod_table p
+                                ON p.prodid=o.prodid
+                                GROUP BY p.prodname
+                                ORDER BY total_revenue DESC
+                                LIMIT 10;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print("Can't fetched data ",e)
+
+# Getting least selling product
+def least_sell():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                p.prodname,SUM(quantity)
+                                AS total_quantity
+                                FROM order_table o
+                                JOIN prod_table p
+                                ON p.prodid=o.prodid
+                                GROUP BY p.prodname
+                                ORDER BY total_quantity
+                                LIMIT 1;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print("Can't get data ",e)

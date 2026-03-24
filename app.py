@@ -1,5 +1,5 @@
 # A mini data warehouse system that takes raw sales data -> cleans it -> load -> star schema -> KPIs -> Generate business insights
-from query import load_cust,load_order,load_prod,load_store,total_revenue,month_revenue,region_revenue
+from query import load_cust,load_order,load_prod,load_store,total_revenue,month_revenue,region_revenue,category_revenue,top_prod,least_sell
 from etl import custDf,factDf,prodDf,storeDf
 import calendar
 
@@ -35,7 +35,7 @@ Choose your option: '''
 
 prod_menu=f'''
 {'='*7} Product Analytics {'='*7}
-1. Top 10 Prod by Revenu
+1. Top 10 Prod by Revenue
 2. Least Selling Prod
 3. Profit Margin by Prod
 4. Category Perform
@@ -87,18 +87,6 @@ def full_etl():
     print('Handling Null...')
     print('Handling Date...')
     print('Full ETL complete, Check etl.py for code !!')
-    
-# For ETL process
-def etl_process_option():
-    while((user_input:=input(etl_menu))!='4'):
-        if user_input=='1':
-            load_dim()
-        elif user_input=='2':
-            load_fact()
-        elif user_input=='3':
-            full_etl()
-        else:
-            print('Please choose from the selection !!')
 
 # For total revenue
 def total_rev_cal():
@@ -134,6 +122,55 @@ def region_rev_cal():
     else:
         print("Data can't be calculated !!")
 
+# For category revenue
+def category_rev_cal():
+    data=category_revenue()
+    if data:
+        print(f"{'='*5} Category Revenue {'='*5}")
+        for i in data:
+            category=i[0]
+            revenue=i[1]
+            print(f"{category} = {revenue}")
+    else:
+        print("Data can't get fetched !!")
+
+# For top prod
+def top_prod_cal():
+    data=top_prod()
+    if data:
+        print(f"{'='*8} Top 10 Product {'='*8}")
+        for i in data:
+            prod=i[0]
+            revenue=i[1]
+            print(f"{prod} = {revenue}")
+    else:
+        print("Data can't get fetched !!")
+        
+# For least selling item
+def least_sell_cal():
+    data=least_sell()
+    if data:
+        print(f"{'='*8} Least Selling Item {'='*8}")
+        for i in data:
+            prod=i[0]
+            quantity=i[1]
+            print(f"{prod} = {quantity} Unit")
+    else:
+        print("Data can't get fetched !!")
+
+# For ETL process
+def etl_process_option():
+    while((user_input:=input(etl_menu))!='4'):
+        if user_input=='1':
+            load_dim()
+        elif user_input=='2':
+            load_fact()
+        elif user_input=='3':
+            full_etl()
+        else:
+            print('Please choose from the selection !!')
+
+# For Revenue process
 def revenue_analytics_option():
     while((user_input:=input(revenu_menu))!='5'):
         if user_input=='1':
@@ -143,9 +180,7 @@ def revenue_analytics_option():
         elif user_input=='3':
             region_rev_cal()
         elif user_input=='4':
-            pass
-        elif user_input=='5':
-            pass
+            category_rev_cal()
         else:
             print('Please choose from the selection !!')
 
@@ -153,9 +188,9 @@ def revenue_analytics_option():
 def product_analytics_option():
     while((user_input:=input(prod_menu))!='5'):
         if user_input=='1':
-            pass
+            top_prod_cal()
         elif user_input=='2':
-            pass
+            least_sell_cal()
         elif user_input=='3':
             pass
         elif user_input=='4':
