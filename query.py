@@ -145,3 +145,59 @@ def least_sell():
             return result
         except Exception as e:
             print("Can't get data ",e)
+
+# Getting profit margin
+def profit_margin():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                p.prodname,
+                                ROUND((SUM(o.profit)::NUMERIC/NULLIF(SUM(o.revenue),0))*100,2)
+                                as profit_margin
+                                FROM order_table o
+                                JOIN prod_table p
+                                ON p.prodid=o.prodid
+                                GROUP BY p.prodname
+                                ORDER BY profit_margin desc;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print("Can't calculate ",e)
+
+# Category performance
+def cat_perform():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                p.category,
+                                SUM(o.revenue) AS total_revenue,
+                                SUM(profit) AS total_profit,
+                                ROUND((SUM(o.profit)::NUMERIC/NULLIF(SUM(o.revenue),0))*100,2)
+                                FROM order_table o
+                                JOIN prod_table p
+                                ON p.prodid=o.prodid
+                                GROUP BY p.category
+                                ORDER BY total_revenue DESC;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print("Can't calculate ",e)
+            
+# Top Customer by Revenue
+def top_cust():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                c.custid,
+                                c.custname,
+                                SUM(o.revenue) AS total_revenue
+                                FROM order_table o
+                                JOIN cust_table c
+                                ON c.custid=o.custid
+                                GROUP BY c.custid,c.custname
+                                ORDER BY total_revenue DESC;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print("Can't fetch ",e)
+

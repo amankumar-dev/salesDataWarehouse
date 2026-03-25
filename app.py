@@ -1,5 +1,5 @@
 # A mini data warehouse system that takes raw sales data -> cleans it -> load -> star schema -> KPIs -> Generate business insights
-from query import load_cust,load_order,load_prod,load_store,total_revenue,month_revenue,region_revenue,category_revenue,top_prod,least_sell
+from query import load_cust,load_order,load_prod,load_store,total_revenue,month_revenue,region_revenue,category_revenue,top_prod,least_sell,profit_margin,cat_perform,top_cust
 from etl import custDf,factDf,prodDf,storeDf
 import calendar
 
@@ -38,7 +38,7 @@ prod_menu=f'''
 1. Top 10 Prod by Revenue
 2. Least Selling Prod
 3. Profit Margin by Prod
-4. Category Perform
+4. Category Performance
 5. Back
 
 Choose your option: '''
@@ -158,6 +158,62 @@ def least_sell_cal():
     else:
         print("Data can't get fetched !!")
 
+# For profit margin
+def profit_margin_cal():
+    data=profit_margin()
+    if data:
+        print(f"{'='*8} Proft Margin {'='*8}")
+        for i in data:
+            prod=i[0]
+            margin=i[1]
+            print(f"{prod} = {margin} %")
+    else:
+        print("Data can't get fetched !!")
+
+# For Category performance
+def cat_per_cal():
+    data=cat_perform()
+    if data:
+        print(f"{'='*8} Category Performance {'='*8}")
+        print("Product | Revenue | Profit | Profit Margin")
+        for i in data:
+            prod=i[0]
+            revenue=i[1]
+            profit=i[2]
+            margin=i[3]
+            print(f"{prod} | {revenue/1000000:.1f} M | {profit/1000000:.1f} M | {margin} %")
+    else:
+        print("Data can't get fetched !!")
+
+# For top cust
+def top_cust_cal():
+    data=top_cust()
+    i=data[0]
+    print(f"{'='*8} Category Performance {'='*8}")
+    print("ID | Name | Revenue")
+    if i:
+        id=i[0]
+        cust=i[1]
+        revenue=i[2]
+        print(f"{id} | {cust} | {revenue/100000:.1f} L")
+    else:
+        print("Data can't get fetched !!")
+
+# For revenue per customer
+def rev_per_cust():
+    data=top_cust()
+    print(f"{'='*8} Category Performance {'='*8}")
+    print("ID | Name | Revenue")
+    if data:
+        for i in data:
+            id=i[0]
+            cust=i[1]
+            revenue=i[2]
+            print(f"{id} | {cust} | {revenue/100000:.1f} L")
+    else:
+        print("Data can't get fetched !!")
+
+
 # For ETL process
 def etl_process_option():
     while((user_input:=input(etl_menu))!='4'):
@@ -192,9 +248,9 @@ def product_analytics_option():
         elif user_input=='2':
             least_sell_cal()
         elif user_input=='3':
-            pass
+            profit_margin_cal()
         elif user_input=='4':
-            pass
+            cat_per_cal()
         elif user_input=='5':
             pass
         else:
@@ -204,9 +260,9 @@ def product_analytics_option():
 def customer_analytics_option():
     while((user_input:=input(cust_menu))!='5'):
         if user_input=='1':
-            pass
+            top_cust_cal()
         elif user_input=='2':
-            pass
+            rev_per_cust()
         elif user_input=='3':
             pass
         elif user_input=='4':
