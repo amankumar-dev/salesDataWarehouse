@@ -201,3 +201,40 @@ def top_cust():
         except Exception as e:
             print("Can't fetch ",e)
 
+# Repeat Customer in sales
+def rep_cust():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                c.custname,
+                                c.email,
+                                COUNT(*) AS repeat_cust
+                                FROM order_table o
+                                JOIN cust_table c
+                                ON c.custid=o.custid
+                                GROUP BY c.custname,c.email
+                                HAVING COUNT(*)>1
+                                ORDER BY repeat_cust DESC;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+            
+# Customer count by region
+def cust_count_reg():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                s.region,
+                                COUNT(*) AS reg_cust
+                                FROM cust_table c
+                                JOIN store_table s
+                                ON s.city=c.city
+                                GROUP BY s.region
+                                HAVING COUNT(*)>1
+                                ORDER BY reg_cust DESC;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+

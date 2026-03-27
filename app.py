@@ -1,5 +1,5 @@
 # A mini data warehouse system that takes raw sales data -> cleans it -> load -> star schema -> KPIs -> Generate business insights
-from query import load_cust,load_order,load_prod,load_store,total_revenue,month_revenue,region_revenue,category_revenue,top_prod,least_sell,profit_margin,cat_perform,top_cust
+from query import load_cust,load_order,load_prod,load_store,total_revenue,month_revenue,region_revenue,category_revenue,top_prod,least_sell,profit_margin,cat_perform,top_cust,rep_cust,cust_count_reg
 from etl import custDf,factDf,prodDf,storeDf
 import calendar
 
@@ -63,6 +63,8 @@ time_menu=f'''
 
 Choose your option: '''
 
+#################### Sub Menu ##################################
+
 # For load dimensions table
 def load_dim():
     fun=input('Choose between (Customer/Product/Stores): ')
@@ -82,7 +84,7 @@ def load_fact():
 
 # For run full etl
 def full_etl():
-    print('Running full etl')
+    print(f'{'='*5} Running full etl {'='*5}')
     print('Removing duplicates...')
     print('Handling Null...')
     print('Handling Date...')
@@ -106,7 +108,7 @@ def month_rev_cal():
             year=data[0]
             month=data[1]
             revenue=data[2]
-            print(f'{calendar.month_abbr[month]} {year} = {revenue}')
+            print(f'{calendar.month_abbr[month]} {year} = {revenue/10000000:.2f} Cr')
     else:
         print('Something went wrong')
 
@@ -116,21 +118,21 @@ def region_rev_cal():
     if data:
         print(f"{'='*5} Region Revenue {'='*5}")
         for i in data:
-            region=i[0]
+            region=i[0].title()
             revenue=i[1]
-            print(f"{region} = {revenue}")
+            print(f"{region} = {revenue/10000000:.2f} Cr")
     else:
         print("Data can't be calculated !!")
-
+        
 # For category revenue
 def category_rev_cal():
     data=category_revenue()
     if data:
         print(f"{'='*5} Category Revenue {'='*5}")
         for i in data:
-            category=i[0]
+            category=i[0].title()
             revenue=i[1]
-            print(f"{category} = {revenue}")
+            print(f"{category} = {revenue/10000000:.2f} Cr")
     else:
         print("Data can't get fetched !!")
 
@@ -140,9 +142,9 @@ def top_prod_cal():
     if data:
         print(f"{'='*8} Top 10 Product {'='*8}")
         for i in data:
-            prod=i[0]
+            prod=i[0].title()
             revenue=i[1]
-            print(f"{prod} = {revenue}")
+            print(f"{prod} = {revenue/10000000:.2f} Cr")
     else:
         print("Data can't get fetched !!")
         
@@ -152,7 +154,7 @@ def least_sell_cal():
     if data:
         print(f"{'='*8} Least Selling Item {'='*8}")
         for i in data:
-            prod=i[0]
+            prod=i[0].title()
             quantity=i[1]
             print(f"{prod} = {quantity} Unit")
     else:
@@ -164,7 +166,7 @@ def profit_margin_cal():
     if data:
         print(f"{'='*8} Proft Margin {'='*8}")
         for i in data:
-            prod=i[0]
+            prod=i[0].title()
             margin=i[1]
             print(f"{prod} = {margin} %")
     else:
@@ -177,7 +179,7 @@ def cat_per_cal():
         print(f"{'='*8} Category Performance {'='*8}")
         print("Product | Revenue | Profit | Profit Margin")
         for i in data:
-            prod=i[0]
+            prod=i[0].title()
             revenue=i[1]
             profit=i[2]
             margin=i[3]
@@ -188,12 +190,14 @@ def cat_per_cal():
 # For top cust
 def top_cust_cal():
     data=top_cust()
+    print(data)
     i=data[0]
-    print(f"{'='*8} Category Performance {'='*8}")
+    print(i)
+    print(f"{'='*8} Top Customer {'='*8}")
     print("ID | Name | Revenue")
     if i:
         id=i[0]
-        cust=i[1]
+        cust=i[1].title()
         revenue=i[2]
         print(f"{id} | {cust} | {revenue/100000:.1f} L")
     else:
@@ -202,17 +206,45 @@ def top_cust_cal():
 # For revenue per customer
 def rev_per_cust():
     data=top_cust()
-    print(f"{'='*8} Category Performance {'='*8}")
+    print(f"{'='*8} Revenue Per Customer {'='*8}")
     print("ID | Name | Revenue")
     if data:
         for i in data:
             id=i[0]
-            cust=i[1]
+            cust=i[1].title()
             revenue=i[2]
             print(f"{id} | {cust} | {revenue/100000:.1f} L")
     else:
         print("Data can't get fetched !!")
 
+# For repetative customer
+def rep_cust_cal():
+    data=rep_cust()
+    if data:
+        print(f"{'='*10} Repeated Customer {'='*10}")
+        print("Name | Email | Repeat")
+        for i in data:
+            name=i[0].title()
+            email=i[1]
+            rep=i[2]
+            print(f'{name} | {email} | {rep}')
+    else:
+        print("Data can't get fetched !!")
+
+#For customer by region
+def cust_count_reg_cal():
+    data=cust_count_reg()
+    if data:
+        print(f"{'='*4} Customer by Region {'='*4}")
+        print("Region | Count")
+        for i in data:
+            region=i[0].title()
+            count=i[1]
+            print(f'{region} | {count}')
+    else:
+        print("Data can't get fetched !!")      
+
+########################## For Main Menu #################################
 
 # For ETL process
 def etl_process_option():
@@ -264,11 +296,9 @@ def customer_analytics_option():
         elif user_input=='2':
             rev_per_cust()
         elif user_input=='3':
-            pass
+            rep_cust_cal()
         elif user_input=='4':
-            pass
-        elif user_input=='5':
-            pass
+            cust_count_reg_cal()
         else:
             print('Please choose from the selection !!')
 

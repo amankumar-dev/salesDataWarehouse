@@ -15,9 +15,9 @@ storeDf=pd.read_csv(r'D:\Aman\aman.code\PostgreSQL\Sales_Data_Warehouse_Project\
 
 # Standarize custDf 
 bussiness_key=['email']         # Rule fix kia match krney ke liye uniqueness
-custDf['customer_name']=custDf['customer_name'].str.title()
-custDf['email']=custDf['email'].str.lower()         # Text normalize kia duplicate check krney ke liye
-custDf['city']=custDf['city'].str.title()
+custDf['customer_name']=custDf['customer_name'].str.lower().str.strip()
+custDf['email']=custDf['email'].str.lower().str.strip()         # Text normalize kia duplicate check krney ke liye
+custDf['city']=custDf['city'].str.lower().str.strip()
 custDf['master_id']=(custDf.groupby(bussiness_key)['customer_id'].transform('min'))             # Email ke basis pr group bnaya aur min value se change kr dia
 id_mapping=dict(custDf[custDf['customer_id']!=custDf['master_id']][['customer_id','master_id']].values)     # Un rows ko lia jishka custId change hua hai aur ushey fir masterid ke saath map kr dia
 custDf=custDf.drop_duplicates(subset=bussiness_key,keep='first')                         # Removing duplicates on the basis of email column only
@@ -25,8 +25,8 @@ custDf=custDf.drop(columns=['customer_id'])
 
 # Standarize prodDf
 prodDf=prodDf[['product_name','category','cost_price','unit_price']]
-prodDf['product_name']=prodDf['product_name'].str.title()
-prodDf['category']=prodDf['category'].str.title()
+prodDf['product_name']=prodDf['product_name'].str.lower().str.strip()
+prodDf['category']=prodDf['category'].str.lower().str.strip()
 prodDf['cost_price']=pd.to_numeric(prodDf['cost_price'],errors='coerce')        # Convert non integer into int and if can't then fill null
 prodDf.loc[prodDf['cost_price']<0,'cost_price']=abs(prodDf['cost_price'])       # Handling negative values
 prodDf['unit_price']=pd.to_numeric(prodDf['unit_price'],errors='coerce')        
@@ -37,7 +37,9 @@ prodDf=prodDf.drop_duplicates(keep='first')
 # Standarize storeDf
 storeDf=storeDf[['store_name','region']]
 storeDf.loc[storeDf['store_name'].str.contains("croma"),'store_name'] = "Tata Croma"        # Fixing fuzzy text
-storeDf['store_name'] = storeDf['store_name'].str.strip().str.lower()          
+storeDf['store_name'] = storeDf['store_name'].str.strip().str.lower()
+storeDf['city']=storeDf['store_name'].str.split('-').str[1].str.lower().str.strip()
+storeDf['store_name']=storeDf['store_name'].str.split('-').str[0].str.lower().str.strip()
 storeDf['region'] = storeDf['region'].str.strip().str.lower()
 
 # Standarize salesDf
