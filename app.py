@@ -1,5 +1,5 @@
 # A mini data warehouse system that takes raw sales data -> cleans it -> load -> star schema -> KPIs -> Generate business insights
-from query import load_cust,load_order,load_prod,load_store,total_revenue,month_revenue,region_revenue,category_revenue,top_prod,least_sell,profit_margin,cat_perform,top_cust,rep_cust,cust_count_reg
+from query import load_cust,load_order,load_prod,load_store,total_revenue,month_revenue,region_revenue,category_revenue,top_prod,least_sell,profit_margin,cat_perform,top_cust,rep_cust,cust_count_reg,month_growth,quarter_rev,runn_rev,mov_avg
 from etl import custDf,factDf,prodDf,storeDf
 import calendar
 
@@ -244,6 +244,66 @@ def cust_count_reg_cal():
     else:
         print("Data can't get fetched !!")      
 
+# For monthly growth
+def month_growth_cal():
+    data=month_growth()
+    if data:
+        print(f"{'='*10} Monthly Growth {'='*10}")
+        print("Year | Month | Growth(₹) | Growth(%)")
+        for i in data:
+            year=i[0]
+            month=calendar.month_abbr[int(i[1])]
+            growthRs=i[3]
+            growthPer=i[4]
+            if growthPer==None or growthRs==None:
+                print(f'{year} | {month} | {growthRs} | {growthPer}')
+            else:
+                print(f'{year} | {month} | ₹{growthRs/100000:.2f} L | {growthPer} %')
+    else:
+        print("Data can't get fetched !!")
+        
+# For quarterly revenue
+def quarter_rev_cal():
+    data=quarter_rev()
+    if data:
+        print(f"{'='*10} Quarterly Revenue {'='*10}")
+        print("Year | Quarter | Revenue(₹)")
+        for i in data:
+            year=i[0]
+            month=i[1]
+            growthRs=i[2]
+            print(f'{year} | {month} | ₹{growthRs/100000:.2f} L')
+    else:
+        print("Data can't get fetched !!")
+
+# For running revenue
+def runn_rev_cal():
+    data=runn_rev()
+    if data:
+        print(f"{'='*10} Running Revenue {'='*10}")
+        print("Year | Month | Revenue(₹)")
+        for i in data:
+            year=i[0]
+            month=calendar.month_abbr[int(i[1])]
+            revenue=i[2]
+            print(f'{year} | {month} | ₹{revenue/100000:.2f} L')
+    else:
+        print("Data can't get fetched !!")
+
+# For moving avg
+def mov_avg_cal():
+    data=mov_avg()
+    if data:
+        print(f"{'='*10} Running Revenue {'='*10}")
+        print("Year | Month | Avg_revenue(₹)")
+        for i in data:
+            year=i[0]
+            month=calendar.month_abbr[int(i[1])]
+            avg=i[2]
+            print(f'{year} | {month} | ₹{avg/100000:.2f} L')
+    else:
+        print("Data can't get fetched !!")
+        
 ########################## For Main Menu #################################
 
 # For ETL process
@@ -306,15 +366,13 @@ def customer_analytics_option():
 def time_based_option():
     while((user_input:=input(time_menu))!='5'):
         if user_input=='1':
-            pass
+            month_growth_cal()
         elif user_input=='2':
-            pass
+            quarter_rev_cal()
         elif user_input=='3':
-            pass
+            runn_rev_cal()
         elif user_input=='4':
-            pass
-        elif user_input=='5':
-            pass
+            mov_avg_cal()
         else:
             print('Please choose from the selection !!')
 

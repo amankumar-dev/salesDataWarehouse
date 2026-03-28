@@ -238,3 +238,98 @@ def cust_count_reg():
         except Exception as e:
             print(e)
 
+# For monthly growth
+def month_growth():
+    with conn:
+        try:
+            cursor.execute('''WITH monthly_revenue AS(
+                                SELECT
+                                    EXTRACT(YEAR FROM order_date) AS year,
+                                    EXTRACT(MONTH FROM order_date) AS month,
+                                    SUM(revenue) AS total_revenue
+                                    FROM order_table
+                                    GROUP BY year,month
+                            ),
+                            growth_cal AS(
+                                SELECT
+                                    year,
+                                    month,
+                                    total_revenue,
+                                    (total_revenue-LAG(total_revenue) OVER(ORDER BY year,month)) AS growth,
+                                    (LAG(total_revenue) OVER(ORDER BY year,month)) AS prev_revenue
+                                    FROM monthly_revenue
+                            )
+                            SELECT
+                                year,
+                                month,
+                                prev_revenue,
+                                growth,
+                                ROUND((growth::NUMERIC/prev_revenue)*100,2) AS "growth(%)"
+                                FROM growth_cal;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+
+# For quarterly revenue
+def quarter_rev():
+    with conn:
+        try:
+            cursor.execute('''SELECT
+                                EXTRACT(YEAR FROM order_date) AS year,
+                                EXTRACT(QUARTER FROM order_date) AS quarter,
+                                SUM(revenue) AS total_rev
+                                FROM order_table
+                                GROUP BY year,quarter
+                                ORDER BY year,quarter;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+
+# For running total revenue
+def runn_rev():
+    with conn:
+        try:
+            cursor.execute('''WITH curr_rev AS(  
+                                SELECT
+                                    EXTRACT(YEAR FROM order_date) AS year,
+                                    EXTRACT(MONTH FROM order_date) AS month,
+                                    SUM(revenue) AS total_rev
+                                    FROM order_table
+                                    GROUP BY year,month
+                            )
+                            SELECT
+                                year,
+                                month,
+                                SUM(total_rev) 
+                                OVER(ORDER BY year,month) AS runn_rev
+                                FROM curr_rev''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+ 
+# For moving avg
+def mov_avg():
+    with conn:
+        try:
+            cursor.execute('''WITH curr_rev AS(
+                                SELECT
+                                    EXTRACT(YEAR FROM order_date) AS year,
+                                    EXTRACT(MONTH FROM order_date) AS month,
+                                    SUM(revenue) AS total_rev
+                                    FROM order_table
+                                    GROUP BY year,month
+                            )
+                            SELECT
+                                year,
+                                month,
+                                AVG(total_rev)
+                                OVER(ORDER BY year,month ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as avg_mov
+                                FROM curr_rev;''')
+            result=cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+
